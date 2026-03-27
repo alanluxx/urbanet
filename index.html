@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urbanet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: #0f172a; 
+      color: #fff;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Scrollbar personalizado */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #38bdf8;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0ea5e9;
+    }
+
+    /* Animaciones */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(15px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      animation: fadeInUp 0.8s ease-out;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      height: 50px;
+      width: auto;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.8));
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #38bdf8;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover { 
+      color: #38bdf8;
+      transform: translateY(-2px);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8)), url('img/banner.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+      animation: float 6s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero h2 {
+      font-size: 4rem;
+      margin-bottom: 25px;
+      background: linear-gradient(135deg, #38bdf8, #8b5cf6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px rgba(56, 189, 248, 0.4);
+      animation: pulse 3s ease-in-out infinite;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .hero p { 
+      color: #e2e8f0; 
+      margin-bottom: 35px;
+      font-size: 1.4rem;
+      opacity: 0.95;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .btn {
+      padding: 18px 45px;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9, #06b6d4);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+      font-size: 1.2rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4);
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(56, 189, 248, 0.6);
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .section {
+      padding: 100px 40px;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+
+    .section:nth-child(even) {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+    }
+
+    .section h2 {
+      font-size: 3rem;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #38bdf8, #8b5cf6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      text-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 40px;
+      margin-top: 60px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #1e293b, #334155, #475569);
+      padding: 40px;
+      border-radius: 25px;
+      transition: all 0.5s ease;
+      border: 2px solid rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-20px) scale(1.03);
+      box-shadow: 0 25px 50px rgba(56, 189, 248, 0.4);
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, #334155, #475569, #64748b);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #38bdf8;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card p {
+      color: #cbd5f5;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    #about {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+    }
+
+    #about p {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #cbd5f5;
+    }
+
+    #contacto {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+
+    #contacto p {
+      font-size: 1.2rem;
+      color: #38bdf8;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      margin-top: 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    footer p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    /* Estilos para sección de contacto */
+    .contact-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      max-width: 1000px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+      text-align: left;
+    }
+
+    .contact-info p {
+      font-size: 1.2rem;
+      color: #cbd5f5;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .contact-info a {
+      color: #8b5cf6;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.3rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+      background: linear-gradient(135deg, #8b5cf6, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .contact-info a:hover {
+      color: #a855f7;
+      transform: translateY(-2px) scale(1.05);
+      text-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+    }
+
+    .contact-image {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .contact-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      border: 2px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .contact-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 20px 50px rgba(56, 189, 248, 0.4);
+      border-color: #38bdf8;
+    }
+
+    /* Responsive para contacto */
+    @media (max-width: 768px) {
+      .contact-container {
+        flex-direction: column;
+        gap: 40px;
+      }
+      
+      .contact-info {
+        text-align: center;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 15px 20px;
+      }
+
+      nav {
+        margin-top: 15px;
+      }
+
+      nav a {
+        margin: 0 10px;
+        font-size: 0.9rem;
+      }
+
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .section h2 {
+        font-size: 2rem;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="img/logo.png" alt="Urbanet Logo" class="logo"><h2 style="margin-left: 20px;">Urbanet</h2>
+  </div>
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#about">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="hero-content">
+    <h2>Conectando ciudades inteligentes</h2>
+    <p>Creando Conexiones, Transformando Comunidades.</p>
+    <button class="btn">Comenzar</button>
+  </div>
+</section>
+
+<section class="section" id="servicios">
+  <h2>Sobre Nosotros</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Nuestra Misión</h3>
+      <p>Transformamos la forma en que las comunidades interactúan y prosperan a través de espacios públicos innovadores y accesibles que inspiran el bienestar colectivo.</p>
+    </div>
+    <div class="card">
+      <h3>Nuestra Visión</h3>
+      <p>Ser el líder reconocido en el diseño y software que inspiren, eduquen y enriquezcan la vida de las personas.</p>
+    </div>
+    <div class="card">
+      <h3>Nuestros Valores</h3>
+      <p>Nuestros valores son innovación para superar estándares urbanos, inclusión para todas las personas, sostenibilidad ecológica para el futuro y colaboración comunitaria para crear proyectos integrales y resilientes.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="about">
+  <h2>Objetivo</h2>
+  <p>Desarrollar un sistema web que permita administrar y rentar espacios de manera eficiente, facilitando el control de horarios y reservaciones. El sistema busca reducir errores administrativos, evitar la duplicidad de reservas y mejorar la organización, ofreciendo una plataforma accesible y confiable para administradores y usuarios</p>
+</section>
+
+<section class="section" id="about">
+  <h2>Metas Clave</h2>
+  <p>Uso de espacios: Aumentar en 30% la frecuencia y permanencia en espacios públicos en 5 años. <br>
+
+Proyectos verdes: Implementar anualmente 5 infraestructuras sostenibles con biodiversidad. <br>
+
+Participación: Involucrar a la comunidad mediante comités y programas de diseño y mantenimiento colectivo.</p>
+</section>
+
+<section class="section" id="servicios">
+  <h2>Contacto</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Dirección</h3>
+      <p>UNIVERSIDAD TECNOLOGICA DEL VALLE DE TOLUCA</p>
+    </div>
+    <div class="card">
+      <h3>CROQUIS DE UBICACIÓN</h3>
+     <a href="https://maps.app.goo.gl/oSBgqMPFDYUSLzww5" target="_blank" rel="noopener noreferrer"> <img src="img/imagen_2026-03-17_124341541.png" alt="Croquis de ubicación" style="width: 100%; border-radius: 15px; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 30px rgba(56, 189, 248, 0.4)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';"></a>
+    </div>
+    <div class="card">
+      <h3>Teléfono</h3>
+      <p>735 522 3585 <br>
+        55 9106 5973 <br>
+        722 670 2942</p>
+    </div>
+        <div class="card">
+      <h3>Email</h3>
+      <p>al222410852@gmail.com<br>
+        al222410637@gmail.com<br>
+        al222410908@gmail.com</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="servicios">
+  <h2>Diseño Elegante y Funcional</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Experiencia de Usuario</h3>
+      <p>Priorizamos una navegación intuitiva y fluida para un acceso rápido y sencillo a la información.</p>
+    </div>
+    <div class="card">
+      <h3>Estética Visual</h3>
+      <p>Tonos suaves y tipografías claras crean un entorno armónico que facilita una lectura cómoda y prolongada.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contacto">
+  <h2>Conéctate con Nosotros</h2>
+  <div class="contact-container">
+    <div class="contact-info">
+      <p> <a href="https://www.instagram.com/urbanet_administrador?igsh=MXRicmo2dnhnbWRmOQ==" target="_blank" rel="noopener noreferrer">Haz clic aquí</a></p>
+      <p>Encuéntranos en Instagram para estar al tanto de nuestras novedades y proyectos en tiempo real.</p>
+    </div>
+    <div class="contact-image">
+      <a href="https://www.instagram.com/urbanet_administrador?igsh=MXRicmo2dnhnbWRmOQ==" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+        <img src="img/redsocial.png" alt="Contacto Urbanet" class="contact-img">
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="descargas">
+  <h2>Documentación para Descargar</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Carta de Usuario</h3>
+      <p>Documento que describe los requisitos y necesidades del usuario final del sistema.</p>
+      <a href="pdf/CARTA DE USUARIO.pdf" class="btn" style="margin-top: 15px; display: inline-block;" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
+    </div>
+    <div class="card">
+      <h3>Carta de Madurez</h3>
+      <p>Evaluación del nivel de madurez del proyecto y su estado actual de desarrollo.</p>
+      <a href="pdf/Carta de madurez tecnológica.pdf" class="btn" style="margin-top: 15px; display: inline-block;" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
+    </div>
+    <div class="card">
+      <h3>Ficha Técnica</h3>
+      <p>Especificaciones técnicas detalladas del sistema y sus componentes principales.</p>
+      <a href="pdf/Ficha Técnica.pdf" class="btn" style="margin-top: 15px; display: inline-block;" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="documentos-adicionales">
+  <h2>Documentos Adicionales</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Modelo de Canvas</h3>
+
+      <a href="pdf/MODELO CANVAS.pdf" class="btn" style="margin-top: 15px; display: inline-block;" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
+    </div>
+    <div class="card">
+      <h3>Foda</h3>
+      <a href="pdf/FODA.pdf" class="btn" style="margin-top: 15px; display: inline-block;" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
+    </div>
+    <div class="card">
+      <h3>Balanced Scorecard</h3>
+      <a href="pdf/BalancedScorecard.pdf" class="btn" style="margin-top: 15px; display: inline-block;" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p> 2026 Urbanet - Todos los derechos reservados a
+    <br>
+     Alcantara Valencia Alan
+    <br>
+    Alonso Carrillo Dylan Santiago
+    <br>
+    Mendez Flores Sebastian Uriel
+  </p>
+</footer>
+
+</body>
+</html>
